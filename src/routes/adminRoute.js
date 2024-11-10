@@ -1,6 +1,7 @@
 import express from 'express';
 import Admin from '../models/adminSchema.js';
 import adminAuth from '../middleware/adminAuth.js';
+import Booking from '../models/booking.js';
 const router = new express.Router();
 router.post('/admins/register', async (req, res) => {
     try {
@@ -92,5 +93,16 @@ router.post('/admins/addStudent', adminAuth, async (req, res) => {
         res.status(400).send({ error: 'Failed to add student' });
     }
 });
+
+router.get('/admins/getBookings', adminAuth, async (req, res) => {
+    try {
+        const bookings = await Booking.find({}); 
+        res.status(200).json(bookings); 
+    } catch (error) {
+        res.status(500).send({ message: "Bookings not found" }); 
+    }
+});
+
+
 
 export default router;
